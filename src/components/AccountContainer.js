@@ -7,6 +7,7 @@ import AddTransactionForm from "./AddTransactionForm";
 function AccountContainer() {
   const [transactionData, setTransactionData] = useState([]);
   const [query, setQuery] = useState("")
+  const [newTransactionData, setNewTransactionData] = useState([])
   
 
   useEffect(() => {
@@ -31,12 +32,14 @@ function AccountContainer() {
   function handleSearch(string){
     setQuery(string);
     const results = transactionData.filter(transaction => {
-      if (query === ''){
+      if (query !== ''){
+        return transaction.description.toLowerCase().includes(query.toLowerCase());
+      }
+      else {
         return transactionData
-      };
-      return transaction.description.toLowerCase().includes(query.toLowerCase())
-    });
-    setTransactionData(results)
+      }
+    })
+    setNewTransactionData(results)
   }
  
 
@@ -44,7 +47,7 @@ function AccountContainer() {
     <div>
       <Search searchFtn={handleSearch} />
       <AddTransactionForm addTransaction={handleAddTransaction} newId={transactionData.length} />
-      <TransactionsList transactions={transactionData}/>
+      <TransactionsList transactions={query? newTransactionData: transactionData}/>
     </div>
   );
 }

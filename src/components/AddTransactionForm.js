@@ -13,7 +13,7 @@ function AddTransactionForm({addTransaction, newId}) {
 
   function handleChange(e){
     const name = e.target.name
-    const value = e.target.value
+    let value = e.target.value
     formData.id = newId + 1
     setFormData({...formData,[name]: value});
     
@@ -22,10 +22,16 @@ function AddTransactionForm({addTransaction, newId}) {
 
   function handleSubmit(e){
     e.preventDefault();
-    
     alert(`id is ${formData.id}, date is ${formData.date}, description is ${formData.description}, category is ${formData.category}, amount is ${formData.amount}`);
+    addTransaction(formData);
+    setFormData({
+      id: 0,
+    date: '',
+    description: '',
+    category: '',
+    amount: ''
+    })
     
-    addTransaction(formData)
     
 
     
@@ -35,10 +41,10 @@ function AddTransactionForm({addTransaction, newId}) {
     <div className="ui segment">
       <form className="ui form" onSubmit={handleSubmit}>
         <div className="inline fields">
-          <input type="date" name="date" required onChange={handleChange}/>
-          <input type="text" name="description" placeholder="Description" required onChange={handleChange}/>
-          <input type="text" name="category" placeholder="Category" required onChange={handleChange}/>
-          <input type="number" name="amount" placeholder="Amount" step="0.01" required onChange={handleChange}/>
+          <input type="date" name="date" value={formData.date} required onChange={handleChange}/>
+          <input type="text" name="description" placeholder="Description" value={formData.description} required onChange={handleChange}/>
+          <input type="text" name="category" placeholder="Category" value={formData.category} required onChange={handleChange}/>
+          <input type="number" name="amount" placeholder="Amount" step="0.01" value={formData.amount} required onChange={handleChange}/>
         </div>
         <button className="ui button" type="submit">
           Add Transaction

@@ -2,9 +2,10 @@ import React from "react";
 
 function Search({ searchFtn }) {
   function handleChange(e){
-    searchFtn(e.target.value);
-    
+    console.log(e.target.value)
+     searchFtn(e.target.value); 
   }
+  
 
   return (
     <div className="ui large fluid icon input">
