@@ -6,7 +6,8 @@ import AddTransactionForm from "./AddTransactionForm";
 
 function AccountContainer() {
   const [transactionData, setTransactionData] = useState([]);
-  const [newTransaction, setNewTransaction] = useState({})
+  const [query, setQuery] = useState("")
+  
 
   useEffect(() => {
     fetch('http://localhost:8001/transactions')
@@ -15,15 +16,33 @@ function AccountContainer() {
   },[]);
   
   function handleAddTransaction(formEntry){
-    setNewTransaction(formEntry);
-    setTransactionData([...transactionData,newTransaction])
-   
-    
+    fetch('http://localhost:8001/transactions', {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formEntry),
+    })
+    .then(res => res.json())
+    .then(data => console.log(data))
+  
+    setTransactionData([...transactionData,formEntry]); 
   }
+  function handleSearch(string){
+    setQuery(string);
+    const results = transactionData.filter(transaction => {
+      if (query === ''){
+        return transactionData
+      };
+      return transaction.description.toLowerCase().includes(query.toLowerCase())
+    });
+    setTransactionData(results)
+  }
+ 
 
   return (
     <div>
-      <Search />
+      <Search searchFtn={handleSearch} />
       <AddTransactionForm addTransaction={handleAddTransaction} newId={transactionData.length} />
       <TransactionsList transactions={transactionData}/>
     </div>
