@@ -34,7 +34,7 @@ function TransactionsList({transactions}) {
 
   return (
     <div>
-      <label>Sort</label>
+      <label>Sort Alphabetically</label>
       <br></br>
     <select value={sortParams} onChange={handleChange}  >
       <option value="all">Unsorted</option>
